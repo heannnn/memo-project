@@ -1,10 +1,13 @@
-function MemoItem({ children, onClick, isSelected }) {
+function MemoItem({ children, onClickItem, onClickDelete, isSelected }) {
   return (
     <div
       className={'MemoItem' + (isSelected ? ' selected' : '')}
-      onClick={onClick}
+      onClick={onClickItem}
     >
       {children}
+      <button className="MemoItem__delete-button" onClick={onClickDelete}>
+        X
+      </button>
     </div>
   );
 }

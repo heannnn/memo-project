@@ -1,4 +1,17 @@
 function MemoContainer({ memo, setMemo }) {
+  console.log(memo);
+
+  if (memo === undefined) {
+    return (
+      <div>
+        <h1>
+          메모가 없습니다.
+          <h2>새로운 메모를 추가해주세요.</h2>
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <div className="MemoContainer">
       <div>
