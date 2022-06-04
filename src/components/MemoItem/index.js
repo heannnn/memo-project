@@ -1,3 +1,5 @@
+import './index.css';
+
 function MemoItem({ children, onClickItem, onClickDelete, isSelected }) {
   return (
     <div

@@ -1,4 +1,5 @@
-import MemoItem from './MemoItem';
+import './index.css';
+import MemoItem from '../MemoItem';
 
 function MemoList({
   memos,
@@ -18,7 +19,6 @@ function MemoList({
             deleteMemo(index);
             e.preventDefault();
             e.stopPropagation();
-            console.log('stopPropagation'); // event handler error
           }}
           isSelected={index === selectedMemoIndex}
         >
