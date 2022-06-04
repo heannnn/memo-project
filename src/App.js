@@ -30,15 +30,16 @@ function App() {
   const addMemo = () => {
     const now = new Date().getTime;
 
-    setMemo([
+    setMemos([
       ...memos,
       {
-        title: '',
+        title: 'Untitled',
         content: '',
         createdAt: now,
         updatedAt: now,
       },
     ]);
+    setSelectedMemoIndex(memos.length);
   };
 
   return (
