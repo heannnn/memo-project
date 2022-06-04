@@ -27,9 +27,23 @@ function App() {
     setMemos([...memos]); // 리렌더링을 위해 새로운 reference 설정
   };
 
+  const addMemo = () => {
+    const now = new Date().getTime;
+
+    setMemo([
+      ...memos,
+      {
+        title: '',
+        content: '',
+        createdAt: now,
+        updatedAt: now,
+      },
+    ]);
+  };
+
   return (
     <div className="App">
-      <SideBar memos={memos} />
+      <SideBar memos={memos} addMemo={addMemo} />
       <MemoContainer memo={memos[selectedMemoIndex]} setMemo={setMemo} />
     </div>
   );

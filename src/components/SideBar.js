@@ -2,12 +2,12 @@ import MemoList from './MemoList';
 import SideBarFooter from './SideBarFooter';
 import SideBarHeader from './SideBarHeader';
 
-function SideBar({ memos }) {
+function SideBar({ memos, addMemo }) {
   return (
     <div className="SideBar">
       <SideBarHeader />
       <MemoList memos={memos} />
-      <SideBarFooter />
+      <SideBarFooter onClick={addMemo} />
     </div>
   );
 }
