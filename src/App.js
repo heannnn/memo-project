@@ -2,35 +2,32 @@ import { useState } from 'react';
 import './App.css';
 import MemoContainer from './components/MemoContainer';
 import SideBar from './components/SideBar';
+import { getItem, setItem } from './lib/storage';
+import debounce from 'lodash.debounce';
+import { useCallback } from 'react';
+
+const debouncedSetItem = debounce(setItem, 2000);
 
 function App() {
-  const [memos, setMemos] = useState([
-    {
-      title: 'Memo1',
-      content: 'This is memo1',
-      createdAt: 1654064360688, // 시간
-      updatedAt: 1654064371505,
-    },
-    {
-      title: 'Memo2',
-      content: 'This is memo2',
-      createdAt: 1654064386920, // 시간
-      updatedAt: 1654064391128,
-    },
-  ]);
-
+  const [memos, setMemos] = useState(getItem('memo') || []);
   const [selectedMemoIndex, setSelectedMemoIndex] = useState(0);
-  const setMemo = (newMemo) => {
-    // memos[selectedMemoIndex] = newMemo; // 직접적으로 newMemo를 할당하므로 memos 를 바꿔버림. 불변성 훼손.
-    const newMemos = [...memos]; // 미리 memos copy후에 값 할당. 불변성 유지.
-    newMemos[selectedMemoIndex] = newMemo;
-    setMemos([...newMemos]); // 리렌더링을 위해 새로운 reference 설정
-  };
 
-  const addMemo = () => {
+  const setMemo = useCallback(
+    (newMemo) => {
+      setMemos((memos) => {
+        const newMemos = [...memos];
+        newMemos[selectedMemoIndex] = newMemo;
+        debouncedSetItem('memo', newMemos);
+
+        return newMemos;
+      });
+    },
+    [selectedMemoIndex],
+  );
+
+  const addMemo = useCallback(() => {
     const now = new Date().getTime;
-
-    setMemos([
+    const newMemos = [
       ...memos,
       {
         title: 'Untitled',
@@ -38,20 +35,28 @@ function App() {
         createdAt: now,
         updatedAt: now,
       },
-    ]);
-    setSelectedMemoIndex(memos.length);
-  };
+    ];
 
-  const deleteMemo = (index) => {
-    // 불변성 때문에 newMemos 따로 만듬
-    const newMemos = [...memos];
-
-    newMemos.splice(index, 1);
     setMemos(newMemos);
-    if (index === selectedMemoIndex) {
-      setSelectedMemoIndex(0);
-    }
-  };
+    debouncedSetItem('memo', newMemos);
+    setSelectedMemoIndex(memos.length);
+  }, [memos]);
+
+  const deleteMemo = useCallback(
+    (index) => {
+      setMemos((memos) => {
+        const newMemos = [...memos];
+        newMemos.splice(index, 1);
+        debouncedSetItem('memo', newMemos);
+        return newMemos;
+      });
+
+      if (index === selectedMemoIndex) {
+        setSelectedMemoIndex(0);
+      }
+    },
+    [selectedMemoIndex],
+  );
 
   return (
     <div className="App">
