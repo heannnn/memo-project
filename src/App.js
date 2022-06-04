@@ -24,7 +24,7 @@ function App() {
     // memos[selectedMemoIndex] = newMemo; // 직접적으로 newMemo를 할당하므로 memos 를 바꿔버림. 불변성 훼손.
     const newMemos = [...memos]; // 미리 memos copy후에 값 할당. 불변성 유지.
     newMemos[selectedMemoIndex] = newMemo;
-    setMemos([...memos]); // 리렌더링을 위해 새로운 reference 설정
+    setMemos([...newMemos]); // 리렌더링을 위해 새로운 reference 설정
   };
 
   const addMemo = () => {
@@ -43,7 +43,12 @@ function App() {
 
   return (
     <div className="App">
-      <SideBar memos={memos} addMemo={addMemo} />
+      <SideBar
+        memos={memos}
+        setSelectedMemoIndex={setSelectedMemoIndex}
+        addMemo={addMemo}
+        selectedMemoIndex={selectedMemoIndex}
+      />
       <MemoContainer memo={memos[selectedMemoIndex]} setMemo={setMemo} />
     </div>
   );
