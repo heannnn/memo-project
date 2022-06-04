@@ -1,8 +1,6 @@
 import './index.css';
 
 function MemoContainer({ memo, setMemo }) {
-  console.log(memo);
-
   if (memo === undefined) {
     return (
       <div>
